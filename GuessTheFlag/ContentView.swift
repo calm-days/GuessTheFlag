@@ -1,9 +1,4 @@
-//
-//  ContentView.swift
-//  GuessTheFlag
-//
-//  Created by Роман Люкевич on 12/03/2022.
-//
+
 
 import SwiftUI
 
@@ -21,6 +16,7 @@ struct FlagImage: ViewModifier {
 extension View {
     func imageStyle() -> some View {
         modifier(FlagImage())
+        //comment
     }
 }
 
@@ -29,6 +25,7 @@ struct ContentView: View {
     @State private var showingRestart = false
     @State private var scoreTitle = ""
     @State private var scoreValue = 0
+    @State private var animationAmount = 0.0
     
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
     @State private var correctAnswer = Int.random(in: 0...2)
@@ -60,14 +57,26 @@ struct ContentView: View {
                 ForEach(0..<3) {number in
                     Button {
                         //test
+                        withAnimation {
+                            
+                            if number == correctAnswer {
+                                animationAmount += 360
+                            }
+                            
+                        }
                         flagTapped(number)
+                        
                     } label: {
                         Image(countries[number])
                             .renderingMode(.original)
                             .imageStyle()
                             
+                            
                     }
+                    
+                    
                 }
+                .rotation3DEffect(.degrees(animationAmount), axis: (x: 0,y: 1, z: 0))
                
                 Spacer()
                 Text("Your score is \(scoreValue)")
@@ -183,6 +192,5 @@ struct ContentView_Previews: PreviewProvider {
 //    } message: {
 //        Text("Please read this.")
 //    }
-//
 //}
 //ZStack {}
